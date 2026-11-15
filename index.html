@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PresupuestApp Autónomos | Presupuestos Profesionales en PDF desde tu Móvil</title>
+    <meta name="description" content="Crea, gestiona y envía presupuestos profesionales en PDF desde tu iPhone en segundos. Diseñada para autónomos y pymes en España con cálculo de IVA e IRPF.">
+    
+    <!-- Favicon usando el icono de tu repositorio -->
+    <link rel="icon" type="image/png" href="presupuestos_app_icon.png">
+
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS v3 via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos mínimos personalizados para scrollbar y animaciones -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Ocultar barra de desplazamiento en carrusel manteniendo funcionalidad */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- =====================================================================
+         CONFIGURACIÓN RÁPIDA:
+         Cuando tengas el enlace definitivo de la App Store, busca 
+         id="appstore-link" o reemplaza "#descargar" por tu URL de Apple.
+    ====================================================================== -->
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header class="sticky top-0 z-40 w-full bg-white/85 backdrop-blur-md border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Logo y Nombre -->
+                <a href="#" class="flex items-center gap-3 group focus:outline-none">
+                    <div class="relative w-10 h-10 md:w-11 md:h-11 rounded-xl overflow-hidden shadow-md border border-slate-200 bg-blue-600 flex items-center justify-center transition-transform group-hover:scale-105">
+                        <img 
+                            src="presupuestos_app_icon.png" 
+                            alt="Icono PresupuestApp Autónomos" 
+                            class="w-full h-full object-cover"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <!-- Fallback visual elegante si la imagen aún no carga -->
+                        <div class="hidden w-full h-full items-center justify-center text-white font-display font-bold text-lg bg-gradient-to-br from-blue-600 to-indigo-700">
+                            PA
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold text-slate-900 text-base md:text-lg leading-tight tracking-tight">
+                            PresupuestApp
+                        </span>
+                        <span class="text-xs font-semibold text-blue-600 tracking-wide uppercase">
+                            Autónomos
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Enlaces Escritorio -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                    <a href="#caracteristicas" class="hover:text-blue-600 transition-colors">Características</a>
+                    <a href="#como-funciona" class="hover:text-blue-600 transition-colors">Cómo funciona</a>
+                    <a href="#capturas" class="hover:text-blue-600 transition-colors">Capturas</a>
+                    <a href="#soporte" class="hover:text-blue-600 transition-colors">Soporte y FAQ</a>
+                </nav>
+
+                <!-- CTA Principal + Botón Menú Móvil -->
+                <div class="flex items-center gap-3">
+                    <a href="#descargar" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm transition-all duration-200">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                        <span class="hidden sm:inline">App Store</span>
+                        <span class="sm:hidden">Descargar</span>
+                    </a>
+
+                    <!-- Botón Hamburguesa Móvil -->
+                    <button id="mobile-menu-btn" type="button" aria-label="Abrir menú" class="md:hidden p-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="menu-icon-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-5 space-y-2 shadow-lg">
+            <a href="#caracteristicas" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">Características</a>
+            <a href="#como-funciona" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">Cómo funciona</a>
+            <a href="#capturas" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">Capturas de pantalla</a>
+            <a href="#soporte" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600">Soporte y Privacidad</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION (SECCIÓN PRINCIPAL) -->
+    <section class="relative overflow-hidden pt-10 pb-16 md:pt-16 md:pb-24 bg-gradient-to-b from-white via-slate-50 to-slate-100/80">
+        <!-- Decoración de fondo -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-96 bg-blue-500/5 blur-3xl rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Columna Izquierda: Copywriting -->
+                <div class="lg:col-span-6 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-700 text-xs sm:text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Diseñada para Autónomos y Pymes en España
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+                        Tus presupuestos profesionales en <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">PDF en segundos</span>.
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Olvídate de hojas de cálculo complicadas. Gestiona tus clientes, tarifas, IVA e IRPF desde tu móvil y envía presupuestos impecables por WhatsApp o correo antes de salir de la visita.
+                    </p>
+
+                    <!-- Botones de Acción -->
+                    <div id="descargar" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <!-- Botón App Store (Reemplaza el href cuando tengas la URL publicada) -->
+                        <a id="appstore-link" href="#soporte" onclick="showToast('Próximamente disponible en App Store. Contáctanos en soporte para acceso anticipado.')" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3.5 rounded-2xl shadow-lg shadow-slate-900/15 transition-all hover:-translate-y-0.5">
+                            <svg class="w-7 h-7 fill-current" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                            <div class="text-left">
+                                <div class="text-[10px] uppercase tracking-wider text-slate-300 leading-none">Consíguelo en el</div>
+                                <div class="text-base font-bold leading-tight">App Store</div>
+                            </div>
+                        </a>
+
+                        <a href="#capturas" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold px-6 py-3.5 rounded-2xl shadow-sm transition-all">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            Ver capturas reales
+                        </a>
+                    </div>
+
+                    <!-- Indicadores de confianza -->
+                    <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-500 font-medium">
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            100% Privado (Datos locales)
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            Sin suscripciones ocultas
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            IVA e IRPF configurables
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Banner de App Store + Mockup Flotante -->
+                <div class="lg:col-span-6 relative">
+                    <div class="relative mx-auto max-w-xl">
+                        <!-- Tarjeta principal con Presuposición_AppStore.png -->
+                        <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-200/90 bg-white p-2 sm:p-3 transition-transform duration-500 hover:scale-[1.01]">
+                            <img 
+                                src="Presuposición_AppStore.png" 
+                                alt="Presentación PresupuestApp Autónomos en App Store" 
+                                class="w-full h-auto rounded-2xl object-cover"
+                                onerror="this.onerror=null; this.src='https://placehold.co/900x600/0f172a/ffffff?text=PresupuestApp+Aut%C3%B3nomos';"
+                            >
+                        </div>
+
+                        <!-- Insignia flotante inferior izquierda -->
+                        <div class="hidden sm:flex items-center gap-3 absolute -bottom-5 -left-5 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-slate-100">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">Exportación instantánea</p>
+                                <p class="text-sm font-bold text-slate-900">PDF listo para WhatsApp</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE CARACTERÍSTICAS PRINCIPALES (BENTO GRID) -->
+    <section id="caracteristicas" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+                <span class="text-blue-600 font-bold text-sm uppercase tracking-wider">Todo lo que necesitas</span>
+                <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Pensada para el día a día del trabajador autónomo
+                </h2>
+                <p class="mt-4 text-slate-600 text-base sm:text-lg">
+                    Cada pantalla está diseñada para ahorrarte tiempo administrativo y transmitir una imagen profesional a tus clientes desde el primer minuto.
+                </p>
+            </div>
+
+            <!-- Bento Grid de 6 Módulos con enlaces directos a sus capturas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                
+                <!-- Tarjeta 1: Generación de PDF -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
+                            <button onclick="openLightbox('PDF.png', 'Generación de PDF Profesional', 'Vista previa y exportación directa en formato PDF limpio y listo para enviar.')" class="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Presupuestos en PDF</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Genera documentos PDF limpios, estructurados y con desglose automático de base imponible, IVA e IRPF. Compártelos al instante por WhatsApp, AirDrop o email.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('PDF.png', 'Generación de PDF Profesional', 'Vista previa y exportación directa en formato PDF limpio y listo para enviar.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="PDF.png" alt="Captura PDF PresupuestApp" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Gestión de Clientes -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <button onclick="openLightbox('Cliente.PNG', 'Gestión de Clientes', 'Agenda rápida con datos fiscales (NIF/CIF), teléfono, correo y dirección.')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Agenda de Clientes</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Guarda una vez los datos fiscales de tus clientes habituales (nombre o razón social, NIF/CIF, dirección y contacto) y selecciónalos con un solo toque.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('Cliente.PNG', 'Gestión de Clientes', 'Agenda rápida con datos fiscales (NIF/CIF), teléfono, correo y dirección.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="Cliente.PNG" alt="Captura Gestión de Clientes" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Catálogo de Precios y Tarifas -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                            </div>
+                            <button onclick="openLightbox('Precios.PNG', 'Catálogo de Precios y Tarifas', 'Crea tu listado de servicios y materiales recurrentes para presupuestar sin escribir dos veces.')" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Catálogo de Tarifas</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Ten siempre a mano tus servicios, horas de mano de obra o materiales más frecuentes con sus precios y tipos de IVA predefinidos.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('Precios.PNG', 'Catálogo de Precios y Tarifas', 'Crea tu listado de servicios y materiales recurrentes para presupuestar sin escribir dos veces.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="Precios.PNG" alt="Captura Catálogo de Precios" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Datos de tu Negocio -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-800 text-white flex items-center justify-center shadow-md">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            </div>
+                            <button onclick="openLightbox('Negocio.PNG', 'Perfil de tu Negocio', 'Configura tu logotipo, NIF, dirección fiscal, condiciones y retenciones de IRPF.')" class="text-xs font-semibold text-slate-700 hover:text-slate-950 bg-slate-200/70 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Tu Marca y Fiscalidad</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Personaliza cada documento con el logotipo de tu empresa, tus datos fiscales, condiciones de validez, IBAN y porcentajes de IVA o retención IRPF.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('Negocio.PNG', 'Perfil de tu Negocio', 'Configura tu logotipo, NIF, dirección fiscal, condiciones y retenciones de IRPF.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="Negocio.PNG" alt="Captura Datos de Negocio" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Tarjeta 5: Importación y Copias de Seguridad -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            </div>
+                            <button onclick="openLightbox('Importar.PNG', 'Importación y Respaldo de Datos', 'Importa tus listados o restaura copias de seguridad para no perder nunca tu información.')" class="text-xs font-semibold text-amber-700 hover:text-amber-900 bg-amber-50 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Importación y Respaldo</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Tus datos siempre bajo control. Exporta copias de seguridad e importa tus clientes o tarifas fácilmente si cambias de teléfono.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('Importar.PNG', 'Importación y Respaldo de Datos', 'Importa tus listados o restaura copias de seguridad para no perder nunca tu información.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="Importar.PNG" alt="Captura Importar Datos" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Tarjeta 6: Configuración Guiada -->
+                <div class="reveal group bg-slate-50 hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 hover:border-blue-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-12 h-12 rounded-2xl bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-500/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <button onclick="openLightbox('Onboarding.PNG', 'Configuración Guiada en 2 Minutos', 'Asistente paso a paso para dejar tu perfil listo desde la primera apertura.')" class="text-xs font-semibold text-sky-700 hover:text-sky-900 bg-sky-50 px-3 py-1.5 rounded-full transition-colors">
+                                Ver pantalla →
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Listo en 2 Minutos</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-5">
+                            Sin curvas de aprendizaje. Nuestro asistente inicial te guía paso a paso para que puedas emitir tu primer presupuesto nada más instalar la app.
+                        </p>
+                    </div>
+                    <div onclick="openLightbox('Onboarding.PNG', 'Configuración Guiada en 2 Minutos', 'Asistente paso a paso para dejar tu perfil listo desde la primera apertura.')" class="cursor-pointer rounded-2xl overflow-hidden border border-slate-200 bg-white h-44 relative">
+                        <img src="Onboarding.PNG" alt="Captura Onboarding Guiado" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN CÓMO FUNCIONA (FLUJO ONBOARDING) -->
+    <section id="como-funciona" class="py-16 md:py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <span class="text-blue-400 font-bold text-sm uppercase tracking-wider">Flujo rápido y guiado</span>
+                <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight">
+                    De la instalación a tu primer presupuesto en 3 pasos
+                </h2>
+                <p class="mt-4 text-slate-400 text-base sm:text-lg">
+                    Hemos eliminado todo lo innecesario para que te centres en cerrar trabajos, no en pelearte con formularios interminables.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <!-- Paso 1 -->
+                <div class="reveal bg-slate-800/60 border border-slate-700/80 rounded-3xl p-6 text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-600/30">1</div>
+                    <h3 class="text-lg font-bold mb-2">Bienvenida y Ajustes</h3>
+                    <p class="text-sm text-slate-400 mb-6">Configura la moneda, numeración e impuestos habituales de tu actividad profesional.</p>
+                    <div onclick="openLightbox('Onboarding.PNG', 'Paso 1: Bienvenida', 'Pantalla inicial de bienvenida de PresupuestApp Autónomos.')" class="cursor-pointer mx-auto max-w-[220px] rounded-2xl overflow-hidden border-4 border-slate-700 shadow-2xl hover:border-blue-500 transition-colors">
+                        <img src="Onboarding.PNG" alt="Paso 1 Onboarding" class="w-full h-auto">
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="reveal bg-slate-800/60 border border-slate-700/80 rounded-3xl p-6 text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-600/30">2</div>
+                    <h3 class="text-lg font-bold mb-2">Datos de Autónomo / Empresa</h3>
+                    <p class="text-sm text-slate-400 mb-6">Añade tu nombre comercial, NIF y logotipo para dar identidad a tus documentos.</p>
+                    <div onclick="openLightbox('Onboarding1.PNG', 'Paso 2: Configuración Inicial', 'Asistente guiado para introducir tus datos profesionales.')" class="cursor-pointer mx-auto max-w-[220px] rounded-2xl overflow-hidden border-4 border-slate-700 shadow-2xl hover:border-blue-500 transition-colors">
+                        <img src="Onboarding1.PNG" alt="Paso 2 Onboarding1" class="w-full h-auto">
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="reveal bg-slate-800/60 border border-slate-700/80 rounded-3xl p-6 text-center">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/30">3</div>
+                    <h3 class="text-lg font-bold mb-2">¡Listo para Presupuestar!</h3>
+                    <p class="text-sm text-slate-400 mb-6">Selecciona cliente, añade partidas de tu catálogo y genera el PDF listo para enviar.</p>
+                    <div onclick="openLightbox('Onboarding2.PNG', 'Paso 3: Primeros Pasos', 'Todo preparado para crear y compartir presupuestos en segundos.')" class="cursor-pointer mx-auto max-w-[220px] rounded-2xl overflow-hidden border-4 border-slate-700 shadow-2xl hover:border-emerald-500 transition-colors">
+                        <img src="Onboarding2.PNG" alt="Paso 3 Onboarding2" class="w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA INTERACTIVA DE CAPTURAS DE PANTALLA (APP SHOWCASE) -->
+    <section id="capturas" class="py-16 md:py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 reveal">
+                <div>
+                    <span class="text-blue-600 font-bold text-sm uppercase tracking-wider">Explora la interfaz</span>
+                    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                        Capturas de pantalla reales
+                    </h2>
+                    <p class="mt-2 text-slate-600">
+                        Haz clic en cualquier pantalla para ampliarla y ver todos los detalles.
+                    </p>
+                </div>
+
+                <!-- Filtros por categoría -->
+                <div class="flex flex-wrap gap-2" id="gallery-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white shadow-sm transition-all">
+                        Todas (8)
+                    </button>
+                    <button data-filter="gestion" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">
+                        Gestión y PDF
+                    </button>
+                    <button data-filter="inicio" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">
+                        Inicio Guiado
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid de las 8 Capturas Exactas del Repositorio -->
+            <div id="screenshots-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
+                
+                <!-- 1. PDF.png -->
+                <div data-category="gestion" onclick="openLightbox('PDF.png', 'Vista previa y exportación PDF', 'Documento final generado automáticamente con cálculos de IVA/IRPF y listo para compartir.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="PDF.png" alt="Vista previa y exportación PDF" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Exportación PDF</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Vista previa profesional</p>
+                    </div>
+                </div>
+
+                <!-- 2. Cliente.PNG -->
+                <div data-category="gestion" onclick="openLightbox('Cliente.PNG', 'Gestión de clientes', 'Listado y ficha completa de clientes con datos fiscales para facturación y presupuestos.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Cliente.PNG" alt="Gestión de clientes" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Clientes</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Base de datos rápida</p>
+                    </div>
+                </div>
+
+                <!-- 3. Precios.PNG -->
+                <div data-category="gestion" onclick="openLightbox('Precios.PNG', 'Tarifas y conceptos', 'Catálogo de servicios y precios habituales para presupuestar con un toque.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Precios.PNG" alt="Tarifas y conceptos" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Tarifas y Precios</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Catálogo de servicios</p>
+                    </div>
+                </div>
+
+                <!-- 4. Negocio.PNG -->
+                <div data-category="gestion" onclick="openLightbox('Negocio.PNG', 'Perfil de negocio', 'Personalización de logotipo, NIF/CIF, dirección e impuestos predeterminados.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Negocio.PNG" alt="Perfil de negocio" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Perfil de Negocio</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Datos fiscales y logo</p>
+                    </div>
+                </div>
+
+                <!-- 5. Importar.PNG -->
+                <div data-category="gestion" onclick="openLightbox('Importar.PNG', 'Importar datos y copias', 'Herramienta sencilla para importar datos y mantener copias de seguridad de tu negocio.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Importar.PNG" alt="Importar datos" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Importar Datos</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Copias y migración</p>
+                    </div>
+                </div>
+
+                <!-- 6. Onboarding.PNG -->
+                <div data-category="inicio" onclick="openLightbox('Onboarding.PNG', 'Bienvenida', 'Introducción clara y directa a las ventajas de PresupuestApp Autónomos.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Onboarding.PNG" alt="Bienvenida" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Bienvenida</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Inicio rápido</p>
+                    </div>
+                </div>
+
+                <!-- 7. Onboarding1.PNG -->
+                <div data-category="inicio" onclick="openLightbox('Onboarding1.PNG', 'Configuración inicial', 'Guía visual para configurar tu perfil profesional sin complicaciones.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Onboarding1.PNG" alt="Configuración inicial" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Configuración Inicial</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Asistente guiado</p>
+                    </div>
+                </div>
+
+                <!-- 8. Onboarding2.PNG -->
+                <div data-category="inicio" onclick="openLightbox('Onboarding2.PNG', 'Primeros pasos', 'Último paso del asistente para empezar a emitir presupuestos al instante.')" class="screenshot-card reveal group cursor-pointer bg-white rounded-3xl p-3 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[9/19]">
+                        <img src="Onboarding2.PNG" alt="Primeros pasos" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
+                            <span class="opacity-0 group-hover:opacity-100 bg-white/95 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transition-opacity">
+                                Ampliar
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-1">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Primeros Pasos</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Listo para usar</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE SOPORTE TÉCNICO, FAQ Y PRIVACIDAD (URL OFICIAL PARA APP STORE CONNECT) -->
+    <section id="soporte" class="py-16 md:py-24 bg-white border-t border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Columna Izquierda: Contacto y Soporte Técnico -->
+                <div class="lg:col-span-5 space-y-6 reveal">
+                    <span class="text-blue-600 font-bold text-sm uppercase tracking-wider">Soporte al Usuario</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                        ¿Tienes dudas o sugerencias? Estamos aquí para ayudarte
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        Si necesitas asistencia técnica con <strong>PresupuestApp Autónomos</strong>, quieres proponer una mejora o tienes cualquier consulta sobre la aplicación, escríbenos directamente. Respondemos habitualmente en menos de 24 horas laborables.
+                    </p>
+
+                    <!-- Tarjeta de Email con botón Copiar -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Correo de Soporte Oficial</p>
+                                <a href="mailto:soportecazalla@gmail.com" class="text-base sm:text-lg font-bold text-slate-900 hover:text-blue-600 truncate block">
+                                    soportecazalla@gmail.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 pt-1">
+                            <a href="mailto:soportecazalla@gmail.com?subject=Soporte%20PresupuestApp%20Aut%C3%B3nomos" class="flex-1 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+                                Enviar correo ahora
+                            </a>
+                            <button type="button" onclick="copySupportEmail()" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+                                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span id="copy-btn-text">Copiar email</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Acceso directo a Política de Privacidad (RGPD) -->
+                    <div class="pt-2">
+                        <button type="button" onclick="openPrivacyModal()" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 underline underline-offset-4">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            Leer Política de Privacidad y Protección de Datos (RGPD)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Preguntas Frecuentes (FAQ) -->
+                <div class="lg:col-span-7 reveal">
+                    <h3 class="text-xl font-bold text-slate-900 mb-6">Preguntas Frecuentes (FAQ)</h3>
+                    <div class="space-y-4" id="faq-container">
+                        
+                        <!-- FAQ 1 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                            <button type="button" class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:bg-slate-50 transition-colors">
+                                <span>¿Dónde se guardan los datos de mis clientes y presupuestos?</span>
+                                <svg class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-200 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content hidden px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+                                Todos tus datos (perfil de negocio, clientes, tarifas y presupuestos) se almacenan de forma <strong>100% local en tu propio dispositivo</strong>. No subimos tu contabilidad ni los datos fiscales de tus clientes a servidores externos, garantizando total confidencialidad y cumplimiento con el RGPD.
+                            </div>
+                        </div>
+
+                        <!-- FAQ 2 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                            <button type="button" class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:bg-slate-50 transition-colors">
+                                <span>¿Puedo aplicar distintos tipos de IVA y retención de IRPF?</span>
+                                <svg class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-200 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content hidden px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+                                Sí. La aplicación está adaptada a la fiscalidad española para autónomos y profesionales. Puedes configurar el IVA general (21%), reducido (10%), superreducido (4%) o exento, además de activar o desactivar la retención de IRPF (7% o 15%) según el tipo de cliente.
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                            <button type="button" class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:bg-slate-50 transition-colors">
+                                <span>¿Necesito conexión a Internet para crear un presupuesto?</span>
+                                <svg class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-200 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content hidden px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+                                No. PresupuestApp Autónomos funciona completamente sin conexión. Puedes preparar y generar el PDF en un sótano, una obra o una zona sin cobertura, y enviarlo cuando recuperes señal.
+                            </div>
+                        </div>
+
+                        <!-- FAQ 4 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                            <button type="button" class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:bg-slate-50 transition-colors">
+                                <span>¿Cómo paso mis datos si cambio de iPhone?</span>
+                                <svg class="faq-icon w-5 h-5 text-slate-500 transition-transform duration-200 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content hidden px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+                                Desde la sección de <strong>Importar / Copias de seguridad</strong> de la app puedes exportar un archivo con toda tu información y volver a importarlo en tu nuevo dispositivo en cuestión de segundos.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="presupuestos_app_icon.png" alt="Logo" class="w-9 h-9 rounded-xl border border-slate-800" onerror="this.style.display='none'">
+                    <div>
+                        <span class="font-display font-bold text-white text-base">PresupuestApp Autónomos</span>
+                        <p class="text-xs text-slate-500">Herramienta móvil de presupuestos profesionales</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm">
+                    <a href="#caracteristicas" class="hover:text-white transition-colors">Características</a>
+                    <a href="#capturas" class="hover:text-white transition-colors">Capturas</a>
+                    <a href="#soporte" class="hover:text-white transition-colors">Soporte</a>
+                    <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Política de Privacidad</button>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>&copy; <span id="current-year">2026</span> PresupuestApp Autónomos. Todos los derechos reservados.</p>
+                <p>Contacto: <a href="mailto:soportecazalla@gmail.com" class="text-slate-400 hover:text-white">soportecazalla@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         MODAL LIGHTBOX PARA CAPTURAS DE PANTALLA
+    ====================================================================== -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeLightbox(event)">
+        <div class="relative max-w-lg w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 animate-[fadeIn_0.2s_ease-out]" onclick="event.stopPropagation()">
+            <!-- Cabecera Modal -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                <div>
+                    <h4 id="lightbox-title" class="font-bold text-slate-900 text-base">Título de captura</h4>
+                    <p id="lightbox-desc" class="text-xs text-slate-500 mt-0.5">Descripción</p>
+                </div>
+                <button type="button" onclick="closeLightbox()" aria-label="Cerrar vista previa" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <!-- Contenedor Imagen -->
+            <div class="bg-slate-100 p-4 flex justify-center max-h-[75vh] overflow-y-auto">
+                <img id="lightbox-img" src="" alt="Captura ampliada" class="max-h-[68vh] w-auto rounded-2xl shadow-lg object-contain">
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL DE POLÍTICA DE PRIVACIDAD (REQUISITO APP STORE CONNECT)
+    ====================================================================== -->
+    <div id="privacy-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4" onclick="closePrivacyModal(event)">
+        <div class="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+                <h3 class="font-display font-bold text-lg text-slate-900">Política de Privacidad — PresupuestApp Autónomos</h3>
+                <button type="button" onclick="closePrivacyModal()" aria-label="Cerrar política" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 text-sm text-slate-600 leading-relaxed">
+                <p><strong>Última actualización:</strong> 2026</p>
+                <p>
+                    En <strong>PresupuestApp Autónomos</strong> nos tomamos muy en serio la privacidad de tu negocio y la de tus clientes. Esta política explica cómo tratamos la información dentro de la aplicación móvil, en cumplimiento con el Reglamento General de Protección de Datos (RGPD).
+                </p>
+                <h4 class="font-bold text-slate-900 text-base">1. Almacenamiento 100% Local en tu Dispositivo</h4>
+                <p>
+                    Todos los datos que introduces en la aplicación (datos fiscales de tu negocio, logotipo, listado de clientes, tarifas y presupuestos generados) se almacenan exclusivamente de forma local en la memoria privada de tu dispositivo iOS. El desarrollador no tiene acceso a dichos datos ni los recopila en servidores propios.
+                </p>
+                <h4 class="font-bold text-slate-900 text-base">2. Compartición de Archivos PDF y Copias de Seguridad</h4>
+                <p>
+                    Cuando decides exportar un presupuesto en PDF o crear una copia de seguridad, la aplicación utiliza las herramientas nativas del sistema operativo (Hoja para compartir de iOS) para que seas tú quien elija el destino (correo electrónico, WhatsApp, Archivos o iCloud).
+                </p>
+                <h4 class="font-bold text-slate-900 text-base">3. Permisos de la Aplicación</h4>
+                <p>
+                    La aplicación puede solicitar acceso opcional a tu galería de fotos únicamente si deseas seleccionar un logotipo para incluirlo en tus presupuestos.
+                </p>
+                <h4 class="font-bold text-slate-900 text-base">4. Contacto y Soporte</h4>
+                <p>
+                    Para cualquier duda relacionada con la privacidad o el funcionamiento de la aplicación, puedes contactar con el desarrollador en: <a href="mailto:soportecazalla@gmail.com" class="text-blue-600 font-semibold underline">soportecazalla@gmail.com</a>.
+                </p>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+                <button type="button" onclick="closePrivacyModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-5 py-2.5 rounded-xl">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIÓN TOAST FLOTANTE -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-2xl shadow-xl border border-slate-700">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="toast-message">Mensaje</span>
+    </div>
+
+    <!-- JAVASCRIPT INTERACTIVO -->
+    <script>
+        // Actualizar año en el footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // 1. Menú móvil
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            iconOpen.classList.toggle('hidden', !isHidden);
+            iconClose.classList.toggle('hidden', isHidden);
+        });
+
+        // Cerrar menú móvil al hacer clic en un enlace
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            });
+        });
+
+        // 2. Filtros de la Galería de Capturas
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const screenshotCards = document.querySelectorAll('.screenshot-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Estilos activos de botones
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-blue-600', 'text-white');
+                    b.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                });
+                btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                btn.classList.add('bg-blue-600', 'text-white');
+
+                const filter = btn.getAttribute('data-filter');
+                screenshotCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 3. Lightbox para Capturas
+        const lightboxModal = document.getElementById('lightbox-modal');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-desc');
+
+        function openLightbox(imgSrc, title, desc) {
+            lightboxImg.src = imgSrc;
+            lightboxTitle.textContent = title;
+            lightboxDesc.textContent = desc;
+            lightboxModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightboxModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // 4. Modal Política de Privacidad
+        const privacyModal = document.getElementById('privacy-modal');
+
+        function openPrivacyModal() {
+            privacyModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal() {
+            privacyModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Cerrar modales con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+                closePrivacyModal();
+            }
+        });
+
+        // 5. Acordeón FAQ
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('.faq-icon');
+                const isOpen = !content.classList.contains('hidden');
+
+                // Cerrar otros abiertos
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
+
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // 6. Copiar email de soporte al portapapeles (compatible con iframes y navegadores modernos)
+        function copySupportEmail() {
+            const email = 'soportecazalla@gmail.com';
+            const tempInput = document.createElement('input');
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.textContent = '¡Copiado!';
+            showToast('Correo soportecazalla@gmail.com copiado al portapapeles');
+
+            setTimeout(() => {
+                btnText.textContent = 'Copiar email';
+            }, 2500);
+        }
+
+        // 7. Sistema de Notificación Toast
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3500);
+        }
+
+        // 8. Animación suave al hacer scroll (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
